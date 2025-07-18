@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class StockOpname extends Model
 {
@@ -25,6 +26,13 @@ class StockOpname extends Model
                 $tanggal = \Carbon\Carbon::parse($record->tanggal)->format('dmy');
                 $random = strtoupper(Str::random(3));
                 $record->kode = 'OP' . $tanggal . $random;
+            }
+        });
+
+        static::deleting(function ($record) {
+            // Hapus foto_bukti jika ada
+            if ($record->foto_bukti && Storage::disk('public')->exists($record->foto_bukti)) {
+                Storage::disk('public')->delete($record->foto_bukti);
             }
         });
     }

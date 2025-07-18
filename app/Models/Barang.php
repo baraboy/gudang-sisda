@@ -4,6 +4,7 @@ namespace App\Models;
 use App\Enums\SatuanBarang;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Barang extends Model
 {
@@ -32,6 +33,13 @@ class Barang extends Model
                 $count = static::where('kategori_id', $barang->kategori_id)->count() + 1;
 
                 $barang->kode = $prefix . '-' . str_pad($count, 3, '0', STR_PAD_LEFT);
+            }
+        });
+
+        // Auto-delete foto dari storage saat barang dihapus
+        static::deleting(function ($barang) {
+            if ($barang->foto && Storage::disk('public')->exists($barang->foto)) {
+                Storage::disk('public')->delete($barang->foto);
             }
         });
     }

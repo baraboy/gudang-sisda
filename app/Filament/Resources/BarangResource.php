@@ -113,6 +113,7 @@ class BarangResource extends Resource
                     FileUpload::make('foto')
                         ->label('Foto')
                         ->image()
+                        ->imageEditor()
                         ->disk('public')
                         ->directory('barang')
                         ->visibility('public')

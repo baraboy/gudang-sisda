@@ -62,7 +62,12 @@ class StockOpnameResource extends Resource
                             }),
                         TextInput::make('pic_input')->label('PIC Input')->required(),
                         TextInput::make('pic_penerima')->label('PIC Penerima')->nullable(),
-                        FileUpload::make('foto_bukti')->directory('bukti')->image(),
+                        FileUpload::make('foto_bukti')
+                        ->label('Foto Bukti')
+                        ->image()
+                        ->imageEditor()
+                        ->preserveFilenames()
+                        ->directory('bukti'),
                         Textarea::make('keterangan')->columnSpanFull(),
                     ])
                     ->columns(2),
