@@ -114,6 +114,7 @@ class BarangResource extends Resource
                         ->label('Foto')
                         ->image()
                         ->imageEditor()
+                        ->maxSize(1024)
                         ->disk('public')
                         ->directory('barang')
                         ->visibility('public')

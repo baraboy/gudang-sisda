@@ -65,6 +65,7 @@ class StockOpnameResource extends Resource
                         FileUpload::make('foto_bukti')
                         ->label('Foto Bukti')
                         ->image()
+                        ->maxSize(1024)
                         ->imageEditor()
                         ->preserveFilenames()
                         ->directory('bukti'),

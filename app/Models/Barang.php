@@ -5,6 +5,8 @@ use App\Enums\SatuanBarang;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class Barang extends Model
 {
@@ -33,6 +35,17 @@ class Barang extends Model
                 $count = static::where('kategori_id', $barang->kategori_id)->count() + 1;
 
                 $barang->kode = $prefix . '-' . str_pad($count, 3, '0', STR_PAD_LEFT);
+            }
+        });
+
+        static::created(function ($barang) {
+            if ($barang->foto) {
+                $path = storage_path('app/public/' . $barang->foto);
+                $manager = new ImageManager(new Driver());
+
+                $image = $manager->read($path);
+                $image->scaleDown(1280); // Resize agar panjang max 1280px
+                $image->toJpeg(80)->save($path); // Simpan ulang dengan kompresi
             }
         });
 
